@@ -5,9 +5,9 @@
   <title>Test Inscription LOU</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
       padding: 2rem;
-      max-width: 400px;
+      max-width: 450px;
       margin: auto;
     }
     input, select, button {
@@ -20,13 +20,19 @@
     button {
       background-color: #3c7c69;
       color: white;
+      border: none;
       cursor: pointer;
+    }
+    #result {
+      margin-top: 1rem;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h2>Test d'inscription sécurisée</h2>
-  <form id="testForm">
+  <h2>Formulaire d’inscription LOU</h2>
+
+  <form id="inscriptionForm">
     <input type="text" name="prenom" placeholder="Prénom" required />
     <input type="text" name="nom" placeholder="Nom" required />
     <input type="email" name="email" placeholder="Email" required />
@@ -44,34 +50,37 @@
   <p id="result"></p>
 
   <script>
-    document.getElementById("testForm").addEventListener("submit", function (e) {
+    document.getElementById("inscriptionForm").addEventListener("submit", async function (e) {
       e.preventDefault();
-
       const formData = new FormData(this);
       const data = {};
       formData.forEach((value, key) => data[key] = value);
 
       const API_URL = "https://339ba553-cb7d-4803-bc6e-25a9b5d5d04e-00-1844reqdo0fku.worf.replit.dev/enregistrer";
 
-      fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      })
-      .then(res => res.json())
-      .then(response => {
-        console.log("Réponse API :", response);
-        document.getElementById("result").textContent = response.success
-          ? "✅ Inscription enregistrée, email et message envoyés !"
-          : "❌ Erreur lors de l'envoi.";
-      })
-      .catch(error => {
-        console.error("Erreur réseau :", error);
-        document.getElementById("result").textContent = "❌ Erreur réseau : " + error.message;
-      });
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        if (result.success) {
+          document.getElementById("result").textContent = "✅ Inscription réussie !";
+        } else {
+          document.getElementById("result").textContent = "❌ Erreur : " + result.error;
+        }
+      } catch (err) {
+        document.getElementById("result").textContent = "❌ Erreur de connexion à l’API.";
+        console.error(err);
+      }
     });
   </script>
 </body>
 </html>
+
 
 
