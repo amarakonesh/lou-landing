@@ -2,76 +2,46 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Test Inscription LOU via Apps Script</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 2rem;
-      max-width: 400px;
-      margin: auto;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 0.6rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    button {
-      background-color: #3c7c69;
-      color: white;
-      cursor: pointer;
-    }
-  </style>
+  <title>Test Supabase via Replit</title>
 </head>
 <body>
-  <h2>Test d'inscription sécurisé</h2>
-  <form id="testForm">
-    <input type="text" name="prenom" placeholder="Prénom" required />
-    <input type="text" name="nom" placeholder="Nom" required />
-    <input type="email" name="email" placeholder="Email" required />
-    <input type="text" name="pays" placeholder="Pays" required />
-    <input type="tel" name="telephone" placeholder="Téléphone" required />
+  <h2>Formulaire d'inscription</h2>
+  <form id="form">
+    <input name="prenom" placeholder="Prénom" required><br>
+    <input name="nom" placeholder="Nom" required><br>
+    <input name="email" type="email" placeholder="Email" required><br>
+    <input name="pays" placeholder="Pays" required><br>
+    <input name="telephone" placeholder="Téléphone" required><br>
     <select name="type" required>
       <option value="">-- Vous êtes --</option>
       <option value="Voyageur">Voyageur</option>
       <option value="Hôte">Hôte</option>
-      <option value="Autre">Autre</option>
-    </select>
+    </select><br>
     <button type="submit">Envoyer</button>
   </form>
 
   <p id="result"></p>
 
   <script>
-    document.getElementById("testForm").addEventListener("submit", function (e) {
+    const form = document.getElementById("form");
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
 
-      const formData = new FormData(this);
-      const data = {};
-      formData.forEach((value, key) => data[key] = value);
-
-      const scriptURL = "https://script.google.com/macros/s/AKfycbw_5QjNwXF-pnfQpCHvvbYPe852Ia_zmB1VmdXgXXivyssLjqNi-exeHH_MNr8p2C8Q/exec";
-
-      fetch(scriptURL, {
+      const res = await fetch("https://339ba553-cb7d-4803-bc6e-25a9b5d5d04e-00-1844reqdo0fku.worf.replit.dev/enregistrer", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
-      })
-      .then(res => res.json())
-      .then(response => {
-        console.log("Réponse Apps Script:", response);
-        document.getElementById("result").textContent = response.success
-          ? "✅ Données envoyées avec succès à Airtable !"
-          : "❌ Erreur lors de l'envoi à Airtable.";
-      })
-      .catch(error => {
-        console.error("Erreur réseau :", error);
-        document.getElementById("result").textContent = "❌ Erreur réseau : " + error.message;
       });
+
+      const json = await res.json();
+      document.getElementById("result").textContent = json.success
+        ? "✅ Données bien envoyées à Supabase !"
+        : "❌ Échec : " + (json.error || "Erreur inconnue");
+
+      console.log(json);
     });
   </script>
 </body>
 </html>
+
