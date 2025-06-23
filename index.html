@@ -2,46 +2,80 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Test Supabase via Replit</title>
+  <title>Inscription LOU</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      max-width: 400px;
+      margin: auto;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #3c7c69;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <h2>Formulaire d'inscription</h2>
-  <form id="form">
-    <input name="prenom" placeholder="Prénom" required><br>
-    <input name="nom" placeholder="Nom" required><br>
-    <input name="email" type="email" placeholder="Email" required><br>
-    <input name="pays" placeholder="Pays" required><br>
-    <input name="telephone" placeholder="Téléphone" required><br>
+  <h2>Formulaire d'inscription LOU</h2>
+  <form id="inscription">
+    <input type="text" name="prenom" placeholder="Prénom" required />
+    <input type="text" name="nom" placeholder="Nom" required />
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="text" name="pays" placeholder="Pays" required />
+    <input type="tel" name="telephone" placeholder="Téléphone" required />
     <select name="type" required>
       <option value="">-- Vous êtes --</option>
       <option value="Voyageur">Voyageur</option>
       <option value="Hôte">Hôte</option>
-    </select><br>
+      <option value="Autre">Autre</option>
+    </select>
     <button type="submit">Envoyer</button>
   </form>
 
-  <p id="result"></p>
+  <p id="resultat"></p>
 
   <script>
-    const form = document.getElementById("form");
-    form.addEventListener("submit", async (e) => {
+    document.getElementById("inscription").addEventListener("submit", async function (e) {
       e.preventDefault();
-      const data = Object.fromEntries(new FormData(form).entries());
+      
+      const formData = new FormData(this);
+      const data = {};
+      formData.forEach((value, key) => data[key] = value);
 
-      const res = await fetch("https://339ba553-cb7d-4803-bc6e-25a9b5d5d04e-00-1844reqdo0fku.worf.replit.dev/enregistrer", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
+      const API_URL = "https://339ba553-cb7d-4803-bc6e-25a9b5d5d04e-00-1844reqdo0fku.worf.replit.dev/enregistrer";
 
-      const json = await res.json();
-      document.getElementById("result").textContent = json.success
-        ? "✅ Données bien envoyées à Supabase !"
-        : "❌ Échec : " + (json.error || "Erreur inconnue");
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
 
-      console.log(json);
+        const json = await res.json();
+
+        if (json.success) {
+          document.getElementById("resultat").textContent = "✅ Inscription enregistrée avec succès !";
+        } else {
+          document.getElementById("resultat").textContent = "❌ Erreur lors de l’enregistrement : " + (json.error || "inconnue");
+        }
+      } catch (err) {
+        document.getElementById("resultat").textContent = "❌ Erreur réseau : " + err.message;
+        console.error(err);
+      }
     });
   </script>
 </body>
 </html>
+
 
