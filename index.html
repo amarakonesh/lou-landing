@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Test Inscription LOU via Google Apps Script</title>
+  <title>Test Inscription LOU via Apps Script</title>
   <style>
     body {
       font-family: sans-serif;
@@ -25,7 +25,7 @@
   </style>
 </head>
 <body>
-  <h2>Test envoi à Apps Script</h2>
+  <h2>Test d'inscription sécurisé</h2>
   <form id="testForm">
     <input type="text" name="prenom" placeholder="Prénom" required />
     <input type="text" name="nom" placeholder="Nom" required />
@@ -51,8 +51,7 @@
       const data = {};
       formData.forEach((value, key) => data[key] = value);
 
-      // 🔁 Remplace cette URL par l’URL de ton Apps Script déployé
-      const scriptURL = "https://script.google.com/macros/s/AKfycbxjXu7How-6M1UlDQc1jJge6rqzo8UIsZpZTzb9ViM5h6Wj_D_hvr8PThJVh44fnJw/exec";
+      const scriptURL = "https://script.google.com/macros/s/AKfycbw6i9KaFcpCeIiCAvPZlpH9Ybvzr94XOr_FtCou8i29JFHLF7HcWYgf_e4wo8PngP4SZg/exec";
 
       fetch(scriptURL, {
         method: "POST",
@@ -65,8 +64,8 @@
       .then(response => {
         console.log("Réponse Apps Script:", response);
         document.getElementById("result").textContent = response.success
-          ? "✅ Données envoyées avec succès !"
-          : "❌ Erreur lors de l'envoi.";
+          ? "✅ Données envoyées avec succès à Airtable !"
+          : "❌ Erreur lors de l'envoi à Airtable.";
       })
       .catch(error => {
         console.error("Erreur réseau :", error);
