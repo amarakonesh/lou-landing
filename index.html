@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Inscription LOU</title>
+  <title>Test Inscription LOU</title>
   <style>
     body {
       font-family: sans-serif;
@@ -25,8 +25,8 @@
   </style>
 </head>
 <body>
-  <h2>Formulaire d'inscription LOU</h2>
-  <form id="inscription">
+  <h2>Test d'inscription sécurisée</h2>
+  <form id="testForm">
     <input type="text" name="prenom" placeholder="Prénom" required />
     <input type="text" name="nom" placeholder="Nom" required />
     <input type="email" name="email" placeholder="Email" required />
@@ -41,38 +41,34 @@
     <button type="submit">Envoyer</button>
   </form>
 
-  <p id="resultat"></p>
+  <p id="result"></p>
 
   <script>
-    document.getElementById("inscription").addEventListener("submit", async function (e) {
+    document.getElementById("testForm").addEventListener("submit", function (e) {
       e.preventDefault();
-      
+
       const formData = new FormData(this);
       const data = {};
       formData.forEach((value, key) => data[key] = value);
 
       const API_URL = "https://339ba553-cb7d-4803-bc6e-25a9b5d5d04e-00-1844reqdo0fku.worf.replit.dev/enregistrer";
 
-      try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
-        });
-
-        const json = await res.json();
-
-        if (json.success) {
-          document.getElementById("resultat").textContent = "✅ Inscription enregistrée avec succès !";
-        } else {
-          document.getElementById("resultat").textContent = "❌ Erreur lors de l’enregistrement : " + (json.error || "inconnue");
-        }
-      } catch (err) {
-        document.getElementById("resultat").textContent = "❌ Erreur réseau : " + err.message;
-        console.error(err);
-      }
+      fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(response => {
+        console.log("Réponse API :", response);
+        document.getElementById("result").textContent = response.success
+          ? "✅ Inscription enregistrée, email et message envoyés !"
+          : "❌ Erreur lors de l'envoi.";
+      })
+      .catch(error => {
+        console.error("Erreur réseau :", error);
+        document.getElementById("result").textContent = "❌ Erreur réseau : " + error.message;
+      });
     });
   </script>
 </body>
