@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Inscription LOU via Google Apps Script</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      max-width: 400px;
+      margin: auto;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #3c7c69;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Test envoi à Apps Script</h2>
+  <form id="testForm">
+    <input type="text" name="prenom" placeholder="Prénom" required />
+    <input type="text" name="nom" placeholder="Nom" required />
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="text" name="pays" placeholder="Pays" required />
+    <input type="tel" name="telephone" placeholder="Téléphone" required />
+    <select name="type" required>
+      <option value="">-- Vous êtes --</option>
+      <option value="Voyageur">Voyageur</option>
+      <option value="Hôte">Hôte</option>
+      <option value="Autre">Autre</option>
+    </select>
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <p id="result"></p>
+
+  <script>
+    document.getElementById("testForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const data = {};
+      formData.forEach((value, key) => data[key] = value);
+
+      // 🔁 Remplace cette URL par l’URL de ton Apps Script déployé
+      const scriptURL = "https://script.google.com/macros/s/AKfycby242qM437mUENXpJlYJjcrmcnVdeh1jxWjk1cCp4yFOBRZTSidygrdw7nD78f1yPwV7Q/exec";
+
+      fetch(scriptURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(response => {
+        console.log("Réponse Apps Script:", response);
+        document.getElementById("result").textContent = response.success
+          ? "✅ Données envoyées avec succès !"
+          : "❌ Erreur lors de l'envoi.";
+      })
+      .catch(error => {
+        console.error("Erreur réseau :", error);
+        document.getElementById("result").textContent = "❌ Erreur réseau : " + error.message;
+      });
+    });
+  </script>
+</body>
+</html>
