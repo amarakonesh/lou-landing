@@ -10,12 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
 
   <!-- EmailJS frontend (user ID uniquement exposé) -->
-  <script type="module">
-    import emailjs from 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-    emailjs.init("vuIOoJjROy2se1e3w");
-    window.emailjs = emailjs;
-  </script>
-
+  <<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("vuIOoJjROy2se1e3w"); // Ton USER ID public EmailJS
+  })();
+</script>
+    
   <style>
     body { margin: 0; font-family: "Inter", sans-serif; background-color: #ffffff; color: #111; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; padding: 0 20px; }
     .top-bar { position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: center; }
