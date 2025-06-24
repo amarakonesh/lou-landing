@@ -376,31 +376,42 @@
     }
 
     async function confirmer() {
-      const email = document.getElementById("email").value.trim();
-      const type = document.getElementById("type").value.trim();
-      const nom = document.getElementById("nom").value.trim();
-      const prenom = document.getElementById("prenom").value.trim();
-      const pays = document.getElementById("pays").value.trim();
-      const telephone = document.getElementById("telephone").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const type = document.getElementById("type").value.trim();
+  const nom = document.getElementById("nom").value.trim();
+  const prenom = document.getElementById("prenom").value.trim();
+  const pays = document.getElementById("pays").value.trim();
+  const telephone = document.getElementById("telephone").value.trim();
 
-      if (!nom || !prenom || !pays || !telephone || !type) {
-        alert("Veuillez remplir tous les champs.");
-        return;
-      }
+  if (!nom || !prenom || !pays || !telephone || !type) {
+    alert("Veuillez remplir tous les champs.");
+    return;
+  }
 
-      try {
-        await envoyerInscription({ email, nom, prenom, pays, telephone, type });
-        setCookie("lou_prenom", prenom, 7);
-        closeModal("infoModal");
-        document.getElementById("confirmationMessage").innerText =
-          "Merci ! Vous êtes inscrit sur la liste d'attente.";
-        document.getElementById("confirmationModal").style.display = "block";
-        chargerCompteur();
-      } catch (err) {
-        alert("Erreur lors de l'inscription : " + err.message);
-      }
-    }
+  try {
+    // 1. Enregistrer dans Supabase + Telegram via backend
+    await envoyerInscription({ email, nom, prenom, pays, telephone, type });
 
+    // 2. Envoyer e-mail de confirmation via EmailJS (frontend uniquement)
+    await emailjs.send("service_k1ghhy3", "template_futugo7", {
+      email: email,
+      nom: nom,
+      prenom: prenom,
+      pays: pays,
+      telephone: telephone,
+      type: type,
+      from_name: "LOU"
+    });
+
+    setCookie("lou_prenom", prenom, 7);
+    closeModal("infoModal");
+    document.getElementById("confirmationMessage").innerText =
+      "Merci ! Vous êtes inscrit sur la liste d'attente.";
+    document.getElementById("confirmationModal").style.display = "block";
+    chargerCompteur();
+  } catch (err) {
+    alert("Erreur lors de l'inscription ou de l'envoi d'email : " + err.message);
+  }
     function setCookie(name, value, days) {
       const expires = new Date(Date.now() + days * 864e5).toUTCString();
       document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + expires + "; path=/";
