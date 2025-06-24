@@ -248,33 +248,7 @@
       </div>
     </div>
   </div>
-
-  <script>
-  const BACKEND_URL = "https://339ba553-cb7d-4803-bc6e-25a9b5d5d04e-00-1844reqdo0fku.worf.replit.dev";
-
-  async function chargerCompteur() {
-    const compteur = document.getElementById("compteur");
-    compteur.innerText = "Chargement...";
-    try {
-      const res = await fetch(`${BACKEND_URL}/compteur`);
-      if (!res.ok) throw new Error("Erreur lors du chargement du compteur");
-      const data = await res.json();
-      compteur.innerText = `${data.total} personnes sont déjà inscrites !`;
-    } catch (e) {
-      compteur.innerText = "⚠️ Erreur de chargement du compteur.";
-      console.error("Erreur compteur:", e);
-    }
-  }
-
-  // Appel du compteur au chargement
-  window.onload = () => {
-    const savedName = getCookie("lou_prenom");
-    if (savedName) {
-      document.querySelector(".subtitle").innerText = `Heureux de vous revoir, ${savedName} 👋`;
-    }
-    checkCookieConsent();
-    chargerCompteur(); // ⬅ c’est ici qu’on déclenche le compteur
-  };
+  
 </script>
 
   <div id="cookieBanner" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background-color: #F7FFFC; color: #111; padding: 15px; text-align: center; font-size: 14px; border-top: 2px solid #A8E6CF; z-index: 1000;">
