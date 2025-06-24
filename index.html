@@ -230,6 +230,7 @@
       }
     }
   </style>
+  
 
   <script>
     const BACKEND_URL = "https://339ba553-cb7d-4803-bc6e-25a9b5d5d04e-00-1844reqdo0fku.worf.replit.dev";
@@ -436,6 +437,16 @@
         changingText.classList.add("fade-in");
       }, 500);
     }, 1700);
+
+    window.onload = () => {
+  const savedName = getCookie("lou_prenom");
+  if (savedName) {
+    document.querySelector(".subtitle").innerText = `Heureux de vous revoir, ${savedName} 👋`;
+  }
+  checkCookieConsent();
+  chargerCompteur(); // ← ✅ appelle bien le compteur
+};
+
   </script>
 
   <!-- ✅ Cookie banner -->
