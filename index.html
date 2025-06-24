@@ -57,16 +57,18 @@
     const BACKEND_URL = "https://339ba553-cb7d-4803-bc6e-25a9b5d5d04e-00-1844reqdo0fku.worf.replit.dev";
 
     async function chargerCompteur() {
-      const compteur = document.getElementById("compteur");
-      compteur.innerText = "Chargement...";
-      try {
-        const res = await fetch(`${BACKEND_URL}/compteur`);
-        const data = await res.json();
-        compteur.innerText = `${data.total} personnes sont déjà inscrites !`;
-      } catch (e) {
-        compteur.innerText = "Erreur de chargement.";
-      }
-    }
+  const compteur = document.getElementById("compteur");
+  compteur.innerText = "Chargement...";
+  try {
+    const res = await fetch(`${BACKEND_URL}/compteur`);
+    if (!res.ok) throw new Error("Erreur serveur");
+    const data = await res.json();
+    compteur.innerText = `${data.total} personnes sont déjà inscrites !`;
+  } catch (e) {
+    compteur.innerText = "⚠️ Erreur de chargement du compteur.";
+    console.error("Erreur compteur :", e);
+  }
+}
 
     async function envoyerInscription(data) {
       const res = await fetch(`${BACKEND_URL}/enregistrer`, {
