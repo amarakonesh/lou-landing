@@ -113,6 +113,28 @@
 }
 
 
+
+    function verifierConnexion() {
+  const banner = document.getElementById("offlineBanner");
+  if (navigator.onLine) {
+    banner.style.display = "none";
+  } else {
+    banner.style.display = "block";
+  }
+}
+
+// Surveille les changements de connexion
+window.addEventListener("online", verifierConnexion);
+window.addEventListener("offline", verifierConnexion);
+
+// Vérifie au chargement
+window.onload = () => {
+  verifierConnexion();
+  // ... tu gardes ici les autres initialisations comme chargerCompteur() ...
+};
+
+    
+
     function closeModal(id) {
       document.getElementById(id).style.display = "none";
     }
@@ -306,5 +328,10 @@
     <a href="politique-confidentialite.html" style="color: #3C7C69; text-decoration: underline; margin-left: 10px; font-weight: 600;">En savoir plus</a>
     <button onclick="acceptCookies()" style="margin-left: 15px; background-color: #A8E6CF; color: black; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer;">J'accepte</button>
   </div>
+  
+  <div id="offlineBanner" style="display: none; position: fixed; top: 0; left: 0; right: 0; background-color: #ffdddd; color: #990000; padding: 12px; text-align: center; font-weight: 600; z-index: 9999;">
+  ⚠️ Vous êtes hors connexion. Certaines fonctionnalités ne sont pas disponibles.
+</div>
+
 </body>
 </html>
