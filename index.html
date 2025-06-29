@@ -50,6 +50,7 @@
       .subtitle { font-size: 0.95rem; }
       .btn { padding: 12px 18px; font-size: 0.9rem; }
       .contact-btn { font-size: 0.95rem; padding: 8px; }
+    }
   </style>
 
   <script>
@@ -91,50 +92,42 @@
       document.getElementById("contactModal").style.display = "block";
     }
 
-   async function confirmer() {
-  const btn = document.getElementById("confirmerBtn");
-  const spinner = document.getElementById("spinner");
+    async function confirmer() {
+      const email = document.getElementById("email").value.trim();
+      const type = document.getElementById("type").value.trim();
+      const nom = document.getElementById("nom").value.trim();
+      const prenom = document.getElementById("prenom").value.trim();
+      const pays = document.getElementById("pays").value.trim();
+      const telephone = document.getElementById("telephone").value.trim();
 
-  btn.disabled = true;
-  spinner.style.display = "inline-block";
+      if (!nom || !prenom || !pays || !telephone || !type) {
+        alert("Veuillez remplir tous les champs.");
+        return;
+      }
 
-  const email = document.getElementById("email").value.trim();
-  const type = document.getElementById("type").value.trim();
-  const nom = document.getElementById("nom").value.trim();
-  const prenom = document.getElementById("prenom").value.trim();
-  const pays = document.getElementById("pays").value.trim();
-  const telephone = document.getElementById("telephone").value.trim();
+      try {
+        await envoyerInscription({ email, nom, prenom, pays, telephone, type });
 
-  if (!nom || !prenom || !pays || !telephone || !type) {
-    alert("Veuillez remplir tous les champs.");
-    btn.disabled = false;
-    spinner.style.display = "none";
-    return;
-  }
+        await emailjs.send("service_k1ghhy3", "template_futugo7", {
+          email: email,
+          nom: nom,
+          prenom: prenom,
+          pays: pays,
+          telephone: telephone,
+          type: type,
+          from_name: "LOU"
+        });
 
-  try {
-    await envoyerInscription({ email, nom, prenom, pays, telephone, type });
-
-    await emailjs.send("service_k1ghhy3", "template_futugo7", {
-      email: email,
-      nom: nom,
-      prenom: prenom,
-      pays: pays,
-      telephone: telephone,
-      type: type,
-      from_name: "LOU"
-    });
-
-    setCookie("lou_prenom", prenom, 7);
-    closeModal("infoModal");
-    document.getElementById("confirmationMessage").innerText =
-      "Merci ! Vous êtes inscrit sur la liste d'attente.";
-    document.getElementById("confirmationModal").style.display = "block";
-    chargerCompteur();
-  } catch (err) {
-    alert("Erreur : " + err.message);
-}
-
+        setCookie("lou_prenom", prenom, 7);
+        closeModal("infoModal");
+        document.getElementById("confirmationMessage").innerText =
+          "Merci ! Vous êtes inscrit sur la liste d'attente.";
+        document.getElementById("confirmationModal").style.display = "block";
+        chargerCompteur();
+      } catch (err) {
+        alert("Erreur : " + err.message);
+      }
+    }
 
     function setCookie(name, value, days) {
       const expires = new Date(Date.now() + days * 864e5).toUTCString();
@@ -230,7 +223,7 @@
       <input type="text" id="pays" required />
       <label for="telephone">Téléphone :</label>
       <input type="tel" id="telephone" required />
-      <button id="confirmerBtn" onclick="confirmer()">Confirmer <span id="spinner" class="spinner" style="display: none;"></span></button>
+      <button onclick="confirmer()">Confirmer</button>
     </div>
   </div>
 
@@ -248,7 +241,7 @@
     <!-- Partie communauté -->
     <h3 style="margin-bottom: 10px;">Rejoignez notre communauté :</h3>
     <div class="contact-options">
-      <a href="https://chat.whatsapp.com/Dwn3nPElrIn9l7LVdPMhF6?mode=r_c target="_blank" class="contact-btn whatsapp">📱 Rejoindre sur WhatsApp</a>
+      <a href="https://chat.whatsapp.com/Dwn3nPElrIn9l7LVdPMhF6?mode=r_c" target="_blank" class="contact-btn whatsapp">📱 Rejoindre sur WhatsApp</a>
       <a href="https://t.me/+Ma7Jt2NOeodkMzdk" target="_blank" class="contact-btn telegram">💬 Rejoindre sur Telegram</a>
     </div>
   </div>
