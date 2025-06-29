@@ -50,25 +50,6 @@
       .subtitle { font-size: 0.95rem; }
       .btn { padding: 12px 18px; font-size: 0.9rem; }
       .contact-btn { font-size: 0.95rem; padding: 8px; }
-      .spinner {
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #2e7d64; /* Couleur LOU */
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  animation: spin 0.8s linear infinite;
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 8px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-    }
-    
   </style>
 
   <script>
@@ -152,10 +133,6 @@
     chargerCompteur();
   } catch (err) {
     alert("Erreur : " + err.message);
-  } finally {
-    btn.disabled = false;
-    spinner.style.display = "none";
-  }
 }
 
 
@@ -271,8 +248,8 @@
     <!-- Partie communauté -->
     <h3 style="margin-bottom: 10px;">Rejoignez notre communauté :</h3>
     <div class="contact-options">
-      <a href="https://wa.me/2250704199804" target="_blank" class="contact-btn whatsapp">📱 Rejoindre sur WhatsApp</a>
-      <a href="https://t.me/Louiciapp" target="_blank" class="contact-btn telegram">💬 Rejoindre sur Telegram</a>
+      <a href="https://chat.whatsapp.com/Dwn3nPElrIn9l7LVdPMhF6?mode=r_c target="_blank" class="contact-btn whatsapp">📱 Rejoindre sur WhatsApp</a>
+      <a href="https://t.me/+Ma7Jt2NOeodkMzdk" target="_blank" class="contact-btn telegram">💬 Rejoindre sur Telegram</a>
     </div>
   </div>
 </div>
