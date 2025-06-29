@@ -51,6 +51,23 @@
       .btn { padding: 12px 18px; font-size: 0.9rem; }
       .contact-btn { font-size: 0.95rem; padding: 8px; }
     }
+    .spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #2e7d64;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
   </style>
 
   <script>
@@ -80,9 +97,21 @@
     }
 
     function openModal(event) {
-      event.preventDefault();
-      document.getElementById("infoModal").style.display = "block";
-    }
+  event.preventDefault();
+  const btnRejoindre = document.getElementById("btnRejoindre");
+  const spinnerRejoindre = document.getElementById("spinnerRejoindre");
+  
+  btnRejoindre.disabled = true;
+  spinnerRejoindre.style.display = "inline-block";
+
+  // Simule un délai pour affichage modal fluide
+  setTimeout(() => {
+    btnRejoindre.disabled = false;
+    spinnerRejoindre.style.display = "none";
+    document.getElementById("infoModal").style.display = "block";
+  }, 400); // 400 ms pour effet smooth
+}
+
 
     function closeModal(id) {
       document.getElementById(id).style.display = "none";
@@ -99,6 +128,11 @@
       const prenom = document.getElementById("prenom").value.trim();
       const pays = document.getElementById("pays").value.trim();
       const telephone = document.getElementById("telephone").value.trim();
+      const btn = document.getElementById("confirmerBtn");
+      const spinner = document.getElementById("spinnerConfirmer");
+
+      btn.disabled = true;
+      spinner.style.display = "inline-block";
 
       if (!nom || !prenom || !pays || !telephone || !type) {
         alert("Veuillez remplir tous les champs.");
@@ -126,7 +160,10 @@
         chargerCompteur();
       } catch (err) {
         alert("Erreur : " + err.message);
-      }
+      }  finally {
+    btn.disabled = false;
+    spinner.style.display = "none";
+  }
     }
 
     function setCookie(name, value, days) {
@@ -197,9 +234,9 @@
       Où que vous soyez, soyez chez vous.
     </p>
     <form class="email-form" onsubmit="openModal(event)">
-      <input type="email" id="email" placeholder="votre@email.com" required />
-      <button type="submit" class="btn">Rejoindre la liste d'attente</button>
-    </form>
+  <input type="email" id="email" placeholder="votre@email.com" required />
+  <button id="btnRejoindre" type="submit" class="btn">Rejoindre la liste d'attente <span id="spinnerRejoindre" class="spinner" style="display: none;"></span></button>
+</form>
   </div>
 
   <div id="compteur" style="margin-top: 15px; font-size: 1rem; color: #555">Chargement...</div>
@@ -223,7 +260,7 @@
       <input type="text" id="pays" required />
       <label for="telephone">Téléphone :</label>
       <input type="tel" id="telephone" required />
-      <button onclick="confirmer()">Confirmer</button>
+      <button id="confirmerBtn" onclick="confirmer()">Confirmer <span id="spinnerConfirmer" class="spinner" style="display: none;"></span></button>
     </div>
   </div>
 
